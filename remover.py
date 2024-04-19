@@ -14,6 +14,8 @@ import PyPDF2
 # Returns -1 on failure
 def getpagenumber(text):
     lines = text.splitlines()
+    if len(lines) < 1:
+        return -1
     try:
         pagenumer = int(lines[-1])
         return pagenumer
