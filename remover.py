@@ -10,24 +10,29 @@ import sys
 import PyPDF2
 
 
-# Parses the last line of the file to an int
+# Parses the last number on the page (in MOST cases page number)
 # Returns -1 on failure
 def getpagenumber(text):
     lines = text.splitlines()
     if len(lines) < 1:
         return -1
-    try:
-        pagenumer = int(lines[-1])
-        return pagenumer
 
+    num_str = ''
+    i = -1
+    while lines[-1][i].isnumeric():
+        num_str = lines[-1][i] + num_str
+        i -= 1
+
+    try:
+        return int(num_str)
     except ValueError:
         return -1
 
 
 if __name__ == "__main__":
 
-    filename = sys.argv[1]
-    # filename = 'folien.pdf'
+    # filename = sys.argv[1]
+    filename = 'slides_chap1.pdf'
 
     with open(filename, 'rb') as file:
         reader = PyPDF2.PdfReader(file)
