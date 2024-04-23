@@ -31,8 +31,8 @@ def getpagenumber(text):
 
 if __name__ == "__main__":
 
-    # filename = sys.argv[1]
-    filename = 'slides_chap1.pdf'
+    filename = sys.argv[1]
+    # filename = 'slides_chap1.pdf'
 
     with open(filename, 'rb') as file:
         reader = PyPDF2.PdfReader(file)
