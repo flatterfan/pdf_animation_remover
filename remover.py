@@ -19,7 +19,9 @@ def getpagenumber(text):
 
     num_str = ''
     i = -1
-    while lines[-1][i].isnumeric():
+
+    # check if there is another character to add to the num_str and do so if it is a numeric char
+    while len(lines[-1]) >= abs(i) and lines[-1][i].isnumeric():
         num_str = lines[-1][i] + num_str
         i -= 1
 
@@ -32,7 +34,7 @@ def getpagenumber(text):
 if __name__ == "__main__":
 
     filename = sys.argv[1]
-    # filename = 'slides_chap1.pdf'
+    # filename = 'folien.pdf'
 
     with open(filename, 'rb') as file:
         reader = PyPDF2.PdfReader(file)
@@ -46,6 +48,8 @@ if __name__ == "__main__":
         current_page = reader.pages[0]
         next_page = reader.pages[0]
 
+        removed_pages_count = 0
+
         # iterate through all pages of the pdf file
         for i in range(1, length):
             current_page = next_page
@@ -58,8 +62,10 @@ if __name__ == "__main__":
             # add page to new pdf file if next page doesn't have the same page number
             if getpagenumber(current_text) == -1 or getpagenumber(current_text) != getpagenumber(next_text):
                 writer.add_page(current_page)
+            else:
+                removed_pages_count += 1
 
         with open(f'{filename[0:-4]}_animation_removed.pdf', 'wb') as output_pdf:
             writer.write(output_pdf)
 
-    print('Animations successfully removed.')
+    print(f'{removed_pages_count} pages have been removed successfully :)')
